@@ -68,10 +68,10 @@ classdef GoToAngle < simiam.controller.Controller
 %             obj.p.plot_2d_ref(dt, atan2(sin(theta),cos(theta)), theta_d, 'g');
             
             % print IR measured distances
-            ir_distances = robot.get_ir_distances();
-            for i=1:numel(ir_distances)
-%                 fprintf('IR %d: %0.3fm\n', i, ir_distances(i));
-            end
+%           ir_distances = robot.get_ir_distances();
+%           for i=1:numel(ir_distances)
+%               fprintf('IR %d: %0.3fm\n', i, ir_distances(i));
+%           end
             
             outputs = obj.outputs;  % make a copy of the output struct
             outputs.v = v;

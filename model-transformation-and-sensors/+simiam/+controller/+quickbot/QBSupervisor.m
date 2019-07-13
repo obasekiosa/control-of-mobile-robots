@@ -171,10 +171,25 @@ classdef QBSupervisor < simiam.controller.Supervisor
             m_per_tick = (2*pi*R)/obj.robot.encoders(1).ticks_per_rev;
             
             %% START CODE BLOCK %%
-            
-            x_dt = 0;
-            y_dt = 0;
-            theta_dt = 0;
+
+            % calculate number of ticks since last sample
+            delta_right_ticks = right_ticks - prev_right_ticks;
+            delta_left_ticks = left_ticks - prev_left_ticks;
+
+            % compute change in distance since last sample
+            delta_distance_right = delta_right_ticks * m_per_tick;
+            delta_distance_left = delta_left_ticks * m_per_tick;
+
+            % calculate change in center distance
+            delta_distance_center = (delta_distance_right + delta_distance_left) / 2;
+
+            % calculate change in distance or right wheel relative to left wheel
+            delta_distance_relative = delta_distance_right - delta_distance_left;
+
+            % compute change in x position, y position and theta (orientation)
+            x_dt = delta_distance_center * cos(theta);
+            y_dt = delta_distance_center * sin(theta);
+            theta_dt = delta_distance_relative / L;
             
             %% END CODE BLOCK %%
             

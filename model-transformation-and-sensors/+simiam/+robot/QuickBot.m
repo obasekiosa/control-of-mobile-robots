@@ -194,8 +194,11 @@ classdef QuickBot < simiam.robot.Robot
             
             %% START CODE BLOCK %%
             
-            ir_voltages = ir_array_values;
-            coeff = [0 0 0 0 0];
+            % convert array values to voltages
+            ir_voltages = ir_array_values / 500;
+
+            % precomputed polynomial function to map voltages to appropraite distance
+            coeff = [-0.0182017290996016	0.168985767378795	-0.626359335822256	1.18528079940313	-1.21042546286860	0.629329510965869];
             
             %% END CODE BLOCK %%
             

@@ -73,7 +73,8 @@ classdef AOandGTG < simiam.controller.Controller
             %% START CODE BLOCK %%
             
             % 3. Blend the two vectors
-            u_ao_gtg = zeros(2,1);
+            blending_weight = 0.25;
+            u_ao_gtg = blending_weight * (u_gtg/norm(u_gtg)) + (1 - blending_weight) * (u_ao/norm(u_ao));
             
             %% END CODE BLOCK %%
             
@@ -98,7 +99,7 @@ classdef AOandGTG < simiam.controller.Controller
             % plot  
             obj.p.plot_2d_ref(dt, theta, theta_ao_gtg, 'c');
             
-%             fprintf('(v,w) = (%0.4g,%0.4g)\n', v,w);
+             fprintf('(v,w) = (%0.4g,%0.4g)\n', v,w);
 
             outputs.v = v;
             outputs.w = w;

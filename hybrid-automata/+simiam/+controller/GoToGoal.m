@@ -106,6 +106,10 @@ classdef GoToGoal < simiam.controller.Controller
             e_D = (e_k-obj.e_k_1)/dt;    
                   
             w = obj.Kp*e_P + obj.Ki*e_I + obj.Kd*e_D;
+            distance_to_goal = sqrt(u_x^2 + u_y^2);
+%            fprintf('old velocity %0.3f  (w, distance_to_goal) = (%0.3f, %0.3f)\n', v, w, distance_to_goal);
+            v = v + distance_to_goal/abs(w);
+%            fprintf('new velocity %0.3f\n', v);
             
             % 4. Save errors for next time step
             obj.E_k = e_I;

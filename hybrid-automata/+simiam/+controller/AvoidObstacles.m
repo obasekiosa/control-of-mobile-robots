@@ -82,6 +82,12 @@ classdef AvoidObstacles < simiam.controller.Controller
                         
             % plot  
             obj.p.plot_2d_ref(dt, theta, theta_ao, 'g');
+
+%             fprintf('(v,w) = (%0.4g,%0.4g)\n', v,w);
+            distance_to_obstacle = min(sqrt(u_i(1,:).^2 + u_i(2,:).^2));
+%             fprintf('old velocity %0.3f  (w, distance_to_goal) = (%0.3f, %0.3f)\n', v, w, distance_to_obstacle);
+            v = v + distance_to_obstacle/abs(w);
+%             fprintf('new velocity %0.3f\n', v);
                         
 %             fprintf('(v,w) = (%0.4g,%0.4g)\n', v,w);
 

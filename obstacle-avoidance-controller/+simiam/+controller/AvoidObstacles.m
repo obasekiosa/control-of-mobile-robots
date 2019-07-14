@@ -77,13 +77,16 @@ classdef AvoidObstacles < simiam.controller.Controller
             % Compute the heading vector
             
             n_sensors = length(robot.ir_array);
-            sensor_gains = [0 0 0 0 0];
+            sensor_gains = [1.2 1.6 2 1.6 1.2];
             u_i = zeros(2,5);
+            for i=1:n_sensors
+                u_i(:,i) = sensor_gains(i) * (ir_distances_wf(1:2, i) - [x; y]);
+            end
             u_ao = sum(u_i,2);
             
             % Compute the heading and error for the PID controller
-            theta_ao = 0;
-            e_k = 0;
+            theta_ao = atan2(u_ao(2), u_ao(1)) ;
+            e_k = theta_ao - theta;
             e_k = atan2(sin(e_k),cos(e_k));
             
             %% END CODE BLOCK %%
@@ -135,7 +138,7 @@ classdef AvoidObstacles < simiam.controller.Controller
                 theta_s = obj.sensor_placement(3,i);
                 
                 R = obj.get_transformation_matrix(x_s, y_s, theta_s);
-                distance_vector = [ir_distances(i); 0; 1]
+                distance_vector = [ir_distances(i); 0; 1];
                 ir_distances_rf(:,i) = R * distance_vector;
             end
             

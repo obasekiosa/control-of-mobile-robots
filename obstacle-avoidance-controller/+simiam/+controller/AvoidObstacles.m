@@ -154,6 +154,13 @@ classdef AvoidObstacles < simiam.controller.Controller
         function R = get_transformation_matrix(obj, x, y, theta)
             %% START CODE BLOCK %%
             R = zeros(3,3);
+            R(1,1) = cos(theta);
+            R(1,2) = -sin(theta);
+            R(1,3) = x;
+            R(2,1) = -R(1,2);
+            R(2,2) = R(1,1);
+            R(2,3) = y;
+            R(3,3) = 1;
             %% END CODE BLOCK %%
         end
         

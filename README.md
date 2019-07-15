@@ -1,7 +1,7 @@
 # control-of-mobile-robots
 following: Control of Mobile Robots by Georgia Institute of Technology on Coursera.
 
-To run any of the code with the simulator  GUI Layout Toolbox is required and should be installed
+To run any of the code with the simulator,  GUI Layout Toolbox for MATLAB is required.
 
 Copyright (c) 2013, Georgia Tech Research Corporation
 All rights reserved.

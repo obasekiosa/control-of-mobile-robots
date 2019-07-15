@@ -103,7 +103,7 @@ classdef FollowWall < simiam.controller.Controller
 
             alpha = 1; % gian to keep robot following wall
             beta = 3.9;  % gain to keep robot at fixed distance to the wall
-            u_fw = alpha * u_fw_tp + beta * u_fw_pp; %/norm(u_fw_pp);
+            u_fw = alpha * u_fw_tp + beta * u_fw_pp;
             
             %% END CODE BLOCK %%
             

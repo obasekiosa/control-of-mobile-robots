@@ -80,26 +80,30 @@ classdef FollowWall < simiam.controller.Controller
             if(strcmp(inputs.direction,'right'))
                 % Pick two of the right sensors based on ir_distances
                 p_1 = ir_distances_wf(:,1);
-                p_2 = ir_distances_wf(:,1);
+                p_2 = ir_distances_wf(:,2);
             else
                 % Pick two of the left sensors based on ir_distances
                 p_1 = ir_distances_wf(:,5);
-                p_2 = ir_distances_wf(:,5);
+                p_2 = ir_distances_wf(:,4);
             end
             
-            u_fw_t = [0;0];
+            u_fw_t = p_2 - p_1;
 
             % 2. Compute u_a, u_p, and u_fw_tp to compute u_fw_p
             
-            u_fw_tp = [0;0];
-            u_a = [0;0];
-            u_p = [0;0];
+            u_fw_tp = u_fw_t / norm(u_fw_t);
+            u_a = p_2;
+
+            u_p = [x; y];
             
-            u_fw_p = [0;0];
+            u_fw_p = (u_a - u_p) - ((u_a - u_p)' * u_fw_tp)*u_fw_tp; % vector pointing towards wall
             
             % 3. Combine u_fw_tp and u_fw_pp into u_fw;
-            u_fw_pp = [0;0];
-            u_fw = u_fw_tp;
+            u_fw_pp = u_fw_p - d_fw * (u_fw_p / norm(u_fw_p)); % positive: pull to wall, negative: push from wall
+
+            alpha = 1; % gian to keep robot following wall
+            beta = 3.9;  % gain to keep robot at fixed distance to the wall
+            u_fw = alpha * u_fw_tp + beta * u_fw_pp; %/norm(u_fw_pp);
             
             %% END CODE BLOCK %%
             

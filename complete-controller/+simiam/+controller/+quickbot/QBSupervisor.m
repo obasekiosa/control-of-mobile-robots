@@ -143,7 +143,43 @@ classdef QBSupervisor < simiam.controller.Supervisor
                 end
                 obj.switch_to_state('stop');
             end
-            
+
+            if (obj.is_in_state('go_to_goal'))
+                if(obj.check_event('at_obstacle'))
+                    if (obj.check_event('sliding_left'))
+                        obj.set_progress_point();
+                        obj.fw_direction = 'left';
+                        obj.switch_to_state('follow_wall');
+
+                    elseif(obj.check_event('sliding_right'))
+                        obj.set_progress_point();
+                        obj.fw_direction = 'right';
+                        obj.switch_to_state('follow_wall');
+                    end
+                end
+            end
+
+            if (obj.is_in_state('follow_wall'))
+                slide = ~obj.check_event('sliding_right') || ~obj.check_event('sliding_left');
+                if(obj.check_event('progress_made') && slide)
+                    obj.switch_to_state('go_to_goal');
+                end
+            end
+
+            if (obj.is_in_state('avoid_obstacles'))
+                if(~obj.check_event('unsafe'))
+                    if (obj.check_event('sliding_left'))
+                        obj.set_progress_point();
+                        obj.fw_direction = 'left';
+                        obj.switch_to_state('follow_wall'); 
+
+                    elseif(obj.check_event('sliding_right'))
+                        obj.set_progress_point();
+                        obj.fw_direction = 'right';
+                        obj.switch_to_state('follow_wall');
+                    end
+                end
+            end
             %% END CODE BLOCK %%
             
             inputs.direction = obj.fw_direction;
@@ -176,7 +212,7 @@ classdef QBSupervisor < simiam.controller.Supervisor
             u_fw = obj.controllers{7}.u_fw;
                         
             %% START CODE BLOCK %%
-            sigma = [0;0];
+            sigma = [u_gtg u_ao]^-1 * u_fw;
             %% END CODE BLOCK %%
 
             rc = false;
@@ -199,7 +235,7 @@ classdef QBSupervisor < simiam.controller.Supervisor
             u_fw = obj.controllers{7}.u_fw;
             
             %% START CODE BLOCK
-            sigma = [0;0];
+            sigma = [u_gtg u_ao]^-1 * u_fw;
             %% END CODE BLOCK
             
             rc = false;
@@ -216,8 +252,8 @@ classdef QBSupervisor < simiam.controller.Supervisor
             rc = false;
             
             %% START CODE BLOCK %%
-            
-            if (1+1==2)
+            epsilon = 0.1;
+            if (norm([x - obj.goal(1); y - obj.goal(2)]) < obj.d_prog - epsilon)
                 rc = true;
             end
             

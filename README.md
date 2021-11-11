@@ -1,7 +1,9 @@
 # control-of-mobile-robots
-following: Control of Mobile Robots by Georgia Institute of Technology on Coursera.
+BIPEDAL ROBOT CONTROLLERS (HYBRID AUTOMATON)
 
 To run any of the code with the simulator,  GUI Layout Toolbox for MATLAB is required.
+
+The simulatior is a copyright of Georgia Tech Research Corporation
 
 Copyright (c) 2013, Georgia Tech Research Corporation
 All rights reserved.
